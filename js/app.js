@@ -1,9 +1,6 @@
 
-
-//-> explicar o eventListener como funciona
+// Toggle menu carrinho
 (function() {
-    //show cart info
-    // -> pesquisar por cart-info
     const cartInfo = document.getElementById('cart-info');
     const cart = document.getElementById('cart');
     cartInfo.addEventListener('click', function() {
@@ -11,18 +8,12 @@
     });
 })();
 
-
-//add to cart
-
-//-> pesquisar por store-item-icon
+// Adicionar ao carrinho
 (function() {
     const cartItemButton = document.querySelectorAll('.store-item-icon');
-    //-> printar esse console
-    //-> explicar a lista com os números
-    // console.log(cartItemButton);
 
     let itemCarrinho = { img: '', valor: 0 };
-    console.log(itemCarrinho)
+    console.log(itemCarrinho);
 
     cartItemButton.forEach(function(button) {
         //-> explicar esse console
@@ -86,7 +77,55 @@
         `;
 
         let componentCarrinho = document.getElementById('cart');
-        let totalCart = document.querySelector('.cart-total-container');
+        const totalCart = document.querySelector('.cart-total-container');
         componentCarrinho.insertBefore(divProdutoAddCarrinho, totalCart);
+        
+        let contador = document.getElementById('item-count');
+        contador.innerText = parseInt(contador.innerText) + 1;
+        alert('Produto adicionado ao carrinho!');
+
+        atualizarTotal();
+    }
+
+    atualizarTotal = function() {
+        let total = 0;
+        const itensCarrinho = document.querySelectorAll('.cart-item-price');
+
+        itensCarrinho.forEach(function(elemento) {
+            total += parseFloat(elemento.textContent);
+        });
+
+        let valorTotalButton = document.querySelector('.item-total');
+        let valorTotalMenu = document.getElementById('cart-total');
+        valorTotalButton.innerHTML = total;
+        valorTotalMenu.innerHTML = total;
+
+    }
+
+})();
+
+// Remover produto do carrinho
+(function() {
+    const botaoRemoverProduto = document.querySelectorAll('.cart-item-remove');
+    botaoRemoverProduto.forEach(function(button) {
+
+       button.addEventListener('click', function() {
+           let containerProduto = button.parentElement;
+           let precoProduto = containerProduto.querySelector('#cart-item-price');
+           atualizarTotalRemover(precoProduto.textContent);
+           alert('Produto removido com sucesso!');
+           button.parentElement.remove();
+       });
+    });
+
+
+    atualizarTotalRemover = function(preco) {
+        let valorTotalButton = document.querySelector('.item-total');
+        let valorTotalMenu = document.getElementById('cart-total');
+        valorTotalButton.innerHTML = parseFloat(valorTotalButton.textContent - preco);
+        valorTotalMenu.innerHTML = parseFloat(valorTotalMenu.textContent - preco);
+
+        let contador = document.getElementById('item-count');
+        contador.innerText = parseInt(contador.innerText) - 1;
     }
 })();
