@@ -11,6 +11,7 @@
 // Adicionar ao carrinho
 (function() {
     const cartItemButton = document.querySelectorAll('.store-item-icon');
+    let botaoRemoverProduto = document.querySelectorAll('.cart-item-remove');
 
     let itemCarrinho = { img: '', valor: 0 };
     console.log(itemCarrinho);
@@ -82,6 +83,7 @@
         
         let contador = document.getElementById('item-count');
         contador.innerText = parseInt(contador.innerText) + 1;
+        atualizarListaBotoesRemover();
         alert('Produto adicionado ao carrinho!');
 
         atualizarTotal();
@@ -92,7 +94,8 @@
         const itensCarrinho = document.querySelectorAll('.cart-item-price');
 
         itensCarrinho.forEach(function(elemento) {
-            total += parseFloat(elemento.textContent);
+            let valorTransformado = parseFloat(elemento.textContent);
+            total += valorTransformado;
         });
 
         let valorTotalButton = document.querySelector('.item-total');
@@ -102,21 +105,20 @@
 
     }
 
-})();
+    atualizarListaBotoesRemover = function() {
+        botaoRemoverProduto = document.querySelectorAll('.cart-item-remove');
+        botaoRemoverProduto.forEach(function(button) {
+    
+           button.addEventListener('click', function() {
+               let containerProduto = button.parentElement;
+               let precoProduto = containerProduto.querySelector('#cart-item-price');
+               atualizarTotalRemover(precoProduto.textContent);
+               alert('Produto removido com sucesso!');
+               button.parentElement.remove();
+           });
+        });
+    }
 
-// Remover produto do carrinho
-(function() {
-    const botaoRemoverProduto = document.querySelectorAll('.cart-item-remove');
-    botaoRemoverProduto.forEach(function(button) {
-
-       button.addEventListener('click', function() {
-           let containerProduto = button.parentElement;
-           let precoProduto = containerProduto.querySelector('#cart-item-price');
-           atualizarTotalRemover(precoProduto.textContent);
-           alert('Produto removido com sucesso!');
-           button.parentElement.remove();
-       });
-    });
 
 
     atualizarTotalRemover = function(preco) {
@@ -128,4 +130,5 @@
         let contador = document.getElementById('item-count');
         contador.innerText = parseInt(contador.innerText) - 1;
     }
+
 })();
